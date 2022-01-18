@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import Login from './components/Login.vue'
+import UserList from './components/UserList.vue'
 
 let login = ref(false);
 
@@ -58,7 +59,7 @@ if (localStorage.getItem('discord_like_devfront_b3') == undefined) {
 </script>
 
 <template>
-  <h1 v-if="login">Connecté</h1>
+  <UserList v-if="login" />
   <Login v-else />
 </template>
 
