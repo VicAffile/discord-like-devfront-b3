@@ -7,6 +7,7 @@ const pw = ref('');
 const token = ref('');
 
 
+
 async function login() {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json')
@@ -24,10 +25,15 @@ async function login() {
         response.json().then(data => {
             console.log(data)
             token.value = data.token;
+            localStorage.removeItem('discord_like_devfront_b3');
+            localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
+                username: id.value,
+                token: data.token,
+                timestamp: Date.now()
+            }));
         });
         pw.value = '';
     }
-
 }
 
 </script>

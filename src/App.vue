@@ -1,11 +1,65 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+import { ref } from 'vue';
 import Login from './components/Login.vue'
+
+let login = ref(false);
+
+async function loginToken(userPast) {
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json')
+  headers.append('Authorization', 'Bearer ' + JSON.parse(localStorage.discord_like_devfront_b3).token);
+  const options = {
+    method: "POST",
+    mode: "cors",
+    headers
+  };
+  const response = await fetch('https://edu.tardigrade.land/msg//protected/extend_session', options);
+  if (response.status == 200) {
+    console.log("Token valide!");
+    login.value = true;
+    response.json().then(data => {
+      console.log(data)
+      const user = {
+        username: userPast.username,
+        token: data.token,
+        timestamp: Date.now()
+      }
+      localStorage.removeItem('discord_like_devfront_b3');
+      localStorage.setItem('discord_like_devfront_b3', JSON.stringify(user));
+    });
+  } else {
+    console.log("Token éronné!");
+    login.value = false;
+    localStorage.removeItem('discord_like_devfront_b3');
+    localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
+      username: "",
+      token: "",
+      timestamp: undefined
+    }));
+  }
+}
+
+
+if (localStorage.getItem('discord_like_devfront_b3') == undefined) {
+  login.value = false;
+  localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
+    username: "",
+    token: "",
+    timestamp: undefined
+  }));
+} else {
+  login.value = false;
+  let user = JSON.parse(localStorage.discord_like_devfront_b3);
+  console.log(user.token)
+  if (Date.now() - user.timestamp < 10800000 && user.username != "") {
+    loginToken(user);
+  }
+}
 </script>
 
 <template>
-  <Login />
+  <h1 v-if="login">Connecté</h1>
+  <Login v-else />
 </template>
 
 <style>
