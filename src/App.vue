@@ -58,6 +58,7 @@ if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorag
 <template>
   <h1 v-if="store.state.login">Connecté</h1>
   <Login v-else />
+
 </template>
 
 <style>
@@ -85,3 +86,6 @@ body {
   background-color: var(--background-color);
 }
 </style>
+
+
+<!-- eyJhbGciOiJIUzI1NiJ9.eyJhZG1pbiI6ImZhbHNlIiwiaWF0I…vYiJ9.femrt8gdtxBkzz62zzxY-8k1mppaf9NvwuR262AUvQg -->
