@@ -43,14 +43,14 @@ async function login() {
         <div class="picture_container">
             <img src="didigoodenough.png" alt="Logo" />
         </div>
-        <form>
+        <form method="post">
             <div class="login_input">
                 <label for="username">Username :</label>
-                <input type="text" id="username" v-model="id" required />
+                <input type="text" id="username" v-model="id" autocomplete="off" required />
             </div>
             <div class="login_input">
                 <label for="password">Password :</label>
-                <input type="password" id="password" v-model="pw" required />
+                <input type="password" id="password" v-model="pw" autocomplete="off" required />
             </div>
             <button @click="login">Login</button>
         </form>
@@ -98,7 +98,13 @@ input {
 }
 
 input:hover {
+    color: var(--white-color);
     border-color: var(--secondary-color);
+}
+
+input:focus {
+    border: solid 3px var(--secondary-color);
+    background-color: var(--black-color);
 }
 
 section {
