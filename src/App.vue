@@ -1,46 +1,89 @@
 <script setup>
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import Login from './components/Login.vue';
-import Channel from './components/Channel.vue';
-
 import { ref } from 'vue';
+import {useStore} from "vuex"
+import Login from './components/Login.vue'
+import UserList from './components/UserList.vue'
+const store=useStore();
 
-const channelList = ref([{name: "bonjour", img: null, id:1},{name: "au revoir", img: null, id:2}]);
-//const channelList = ref([]);
-
-async function getChannel() {
+async function loginToken(userPast) {
   const options = {
-      method: "GET",
-      headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhZG1pbiI6ImZhbHNlIiwiaWF0IjoiMTY0MjUxMjk2NCIsInN1YiI6ImFqYWNvYiJ9.E-7iJLetcp_-Esp3krrn59YMAZsy4bFyV-tJD3rAiO8' 
-      }
+    method: "POST",
+    headers: {
+      Authorization: 'Bearer '+JSON.parse(localStorage.discord_like_devfront_b3).token
+    }
   };
-  const response = await fetch('https://edu.tardigrade.land/msg/protected/user/channels', options);
+  const response = await fetch('https://edu.tardigrade.land/msg/protected/extend_session', options);
   if (response.status == 200) {
-      response.json().then(data => {
-          console.log(data)
-          channelList.value = data;
-      });
+    console.log("Token valide!");
+        store.commit('logIn');
+    response.json().then(data => {
+      localStorage.removeItem('discord_like_devfront_b3');
+      localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
+        username: userPast.username,
+        token: data.token,
+        timestamp: Date.now()
+      }));
+    });
+  } else {
+    console.log("Token éronné!");
+        store.commit('logOut');
+    localStorage.removeItem('discord_like_devfront_b3');
+    localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
+      username: "",
+      token: "",
+      timestamp: undefined
+    }));
   }
 }
 
-//getChannel();
+
+if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorage.getItem('discord_like_devfront_b3') == 'null') {
+        store.commit('logOut');
+  localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
+    username: "",
+    token: "",
+    timestamp: undefined
+  }));
+} else {
+        store.commit('logOut');
+  let user = JSON.parse(localStorage.discord_like_devfront_b3); 
+  console.log(user.token)
+  if (Date.now() - user.timestamp < 10800000 && user.username != "") {
+    loginToken(user);
+  }
+}
+
 </script>
 
 <template>
-  <Login />
-  <Channel :channelList="channelList" />
+  <h1 v-if="store.state.login">Connecté</h1>
+  <Login v-else />
+
 </template>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  height: 100%;
+}
+
+body {
+  --background-color: rgb(72, 76, 84);
+  --primary-color: rgb(54, 57, 63);
+  --secondary-color: rgb(114, 137, 218);
+  --black-color: rgb(48, 51, 57);
+  --white-color: rgb(238, 238, 238);
+
+  margin: 0px;
+  background-color: var(--background-color);
 }
 </style>
 
