@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from 'vue';
-
+import {useStore} from 'vuex';
 const id = ref('');
 const pw = ref('');
 
+const store=useStore();
 const token = ref('');
 
 
@@ -32,6 +33,7 @@ async function login() {
                 timestamp: Date.now()
             }));
         });
+        store.commit('logIn');
         pw.value = '';
     }
 }
