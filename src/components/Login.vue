@@ -9,8 +9,6 @@ const token = ref('');
 
 
 async function login() {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json')
     let json = { username: id.value, password: pw.value };
     json = JSON.stringify(json);
     console.log(json);
@@ -18,7 +16,9 @@ async function login() {
         method: "POST",
         mode: "cors",
         body: json,
-        headers
+        headers: {
+            'Content-Type': 'application/json'
+        }
     };
     const response = await fetch('https://edu.tardigrade.land/msg/login', options);
     if (response.status == 200) {
@@ -43,7 +43,7 @@ async function login() {
         <div class="picture_container">
             <img src="didigoodenough.png" alt="Logo" />
         </div>
-        <form method="post">
+        <form method="post" @submit.prevent="login">
             <div class="login_input">
                 <label for="username">Username :</label>
                 <input type="text" id="username" v-model="id" autocomplete="off" required />
@@ -52,11 +52,8 @@ async function login() {
                 <label for="password">Password :</label>
                 <input type="password" id="password" v-model="pw" autocomplete="off" required />
             </div>
-            <button @click="login">Login</button>
+            <button type="submit">Login</button>
         </form>
-    </section>
-    <section v-else>
-        <h1>Connecté</h1>
     </section>
 </template>
 
