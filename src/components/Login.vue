@@ -40,16 +40,20 @@ async function login() {
 
 <template>
     <section v-if="token == ''">
-        <h1>Ressemble à Discord</h1>
-        <form method="post">
-            <label for="username">Username :</label>
-            <input type="text" id="username" v-model="id" required />
-            <br />
-            <label for="password">Password :</label>
-            <input type="password" id="password" v-model="pw" required />
-            <br />
+        <div class="picture_container">
+            <img src="didigoodenough.png" alt="Logo" />
+        </div>
+        <form>
+            <div class="login_input">
+                <label for="username">Username :</label>
+                <input type="text" id="username" v-model="id" required />
+            </div>
+            <div class="login_input">
+                <label for="password">Password :</label>
+                <input type="password" id="password" v-model="pw" required />
+            </div>
+            <button @click="login">Login</button>
         </form>
-        <button @click="login">Login</button>
     </section>
     <section v-else>
         <h1>Connecté</h1>
@@ -57,4 +61,74 @@ async function login() {
 </template>
 
 <style scoped>
+button {
+    width: 90%;
+    height: 40px;
+    color: var(--white-color);
+    font-size: large;
+    border: solid 2px var(--secondary-color);
+    border-radius: 5px;
+    background-color: var(--secondary-color);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 100%;
+    height: 280px;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    height: 40px;
+    color: var(--white-color);
+    border: solid 2px var(--white-color);
+    border-radius: 5px;
+    background-color: var(--black-color);
+}
+
+input:hover {
+    border-color: var(--secondary-color);
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin: auto;
+    margin-top: 50vh;
+    transform: translateY(-50%);
+    width: 33%;
+    color: var(--white-color);
+}
+
+.login_input {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
+}
+
+.picture_container {
+    z-index: -10;
+    position: relative;
+    bottom: -5px;
+    width: 90%;
+}
+
+.picture_container img {
+    width: 100%;
+    object-fit: contain;
+}
 </style>
