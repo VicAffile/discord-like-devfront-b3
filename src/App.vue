@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from 'vue';
+import {useStore} from "vuex"
 import Login from './components/Login.vue'
-
-let login = ref(false);
+import UserList from './components/UserList.vue'
+const store=useStore();
 
 async function loginToken(userPast) {
   const options = {
@@ -14,7 +15,7 @@ async function loginToken(userPast) {
   const response = await fetch('https://edu.tardigrade.land/msg/protected/extend_session', options);
   if (response.status == 200) {
     console.log("Token valide!");
-    login.value = true;
+        store.commit('logIn');
     response.json().then(data => {
       localStorage.removeItem('discord_like_devfront_b3');
       localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
@@ -25,7 +26,7 @@ async function loginToken(userPast) {
     });
   } else {
     console.log("Token éronné!");
-    login.value = false;
+        store.commit('logOut');
     localStorage.removeItem('discord_like_devfront_b3');
     localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
       username: "",
@@ -37,14 +38,14 @@ async function loginToken(userPast) {
 
 
 if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorage.getItem('discord_like_devfront_b3') == 'null') {
-  login.value = false;
+        store.commit('logOut');
   localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
     username: "",
     token: "",
     timestamp: undefined
   }));
 } else {
-  login.value = false;
+        store.commit('logOut');
   let user = JSON.parse(localStorage.discord_like_devfront_b3); 
   console.log(user.token)
   if (Date.now() - user.timestamp < 10800000 && user.username != "") {
@@ -55,7 +56,7 @@ if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorag
 </script>
 
 <template>
-  <h1 v-if="login">Connecté</h1>
+  <h1 v-if="store.state.login">Connecté</h1>
   <Login v-else />
 </template>
 

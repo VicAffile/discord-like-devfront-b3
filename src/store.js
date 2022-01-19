@@ -1,9 +1,12 @@
 import { createStore } from "vuex";
-export const store = createStore({
+const store = createStore({
     state: {
         login: false,
     },
     mutations: {
-        logInOut : (state) => {state.login = !state.login},
+        logIn : (state) => {state.login = true},
+        logOut : (state) => {state.login = false},
     } 
 })
+
+export default store;
