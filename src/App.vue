@@ -1,8 +1,10 @@
 <script setup>
 import { ref } from 'vue';
+
 import {useStore} from "vuex";
 import Login from './components/Login.vue';
 import UserList from './components/UserList.vue';
+import Channel from './components/Channel.vue'
 import {useRouter, RouterLink, RouterView} from "vue-router";
 
 const router = useRouter();
@@ -19,7 +21,7 @@ async function loginToken(userPast) {
   const response = await fetch('https://edu.tardigrade.land/msg/protected/extend_session', options);
   if (response.status == 200) {
     console.log("Token valide!");
-        store.commit('logIn');
+    store.commit('logIn');
     response.json().then(data => {
       localStorage.removeItem('discord_like_devfront_b3');
       localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
@@ -27,11 +29,13 @@ async function loginToken(userPast) {
         token: data.token,
         timestamp: Date.now()
       }));
+      store.commit('logIn');
+      store.commit('saveToken', JSON.parse(localStorage.getItem('discord_like_devfront_b3')).token);
       router.push('Home');
     });
   } else {
     console.log("Token éronné!");
-        store.commit('logOut');
+    store.commit('logOut');
     localStorage.removeItem('discord_like_devfront_b3');
     localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
       username: "",
@@ -41,20 +45,20 @@ async function loginToken(userPast) {
   }
 }
 
-
+store.commit('logOut');
 if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorage.getItem('discord_like_devfront_b3') == 'null') {
-        store.commit('logOut');
   localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
     username: "",
     token: "",
     timestamp: undefined
   }));
 } else {
-        store.commit('logOut');
   let user = JSON.parse(localStorage.discord_like_devfront_b3); 
-  console.log(user.token)
+  //console.log(user.token)
   if (Date.now() - user.timestamp < 10800000 && user.username != "") {
     loginToken(user);
+   // store.commit('logIn');
+
   }
 }
 
@@ -63,11 +67,10 @@ if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorag
 
 <template>
 
-  <!--section v-if="store.state.login">Bonjour</section-->
-     <!-- button @click="$router.push('Home')">Login</button -->
-  <Login />
+  <!--h1 v-if="store.state.login">Connecté</h1> 
+  <Login v-else /-->
+  <!--Channel :channelList="store.state.channelList" /-->
 
-  
 </template>
 
 <style>

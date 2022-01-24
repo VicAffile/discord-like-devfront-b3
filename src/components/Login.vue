@@ -34,6 +34,7 @@ async function login() {
             }));
         });
         store.commit('logIn');
+        store.commit('saveToken', JSON.parse(localStorage.getItem('discord_like_devfront_b3')).token);
         pw.value = '';
         router.push('Home')
     }

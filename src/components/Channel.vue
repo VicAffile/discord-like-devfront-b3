@@ -1,55 +1,47 @@
 <script setup>
 import { ref } from 'vue';
+import store from '../store';
+import Modal from './ModalChannel.vue';
 
 const props = defineProps({
     channelList: Array
 });
 
-const emits = defineEmits({
-    "update:selectedChannel": Number
-});
+const isModal = ref(false);
 
-const selectedChannel = ref('');
-const token = ref('eyJhbGciOiJIUzI1NiJ9.eyJhZG1pbiI6ImZhbHNlIiwiaWF0IjoiMTY0MjU3Njg4MCIsInN1YiI6ImFqYWNvYiJ9.vvwgygGYjKdVZsS0eOStX3tQ_DCAkFm4-QIrItTYjts');
-
-
-function setSelectedChannel(newId){
-    selectedChannel.value = newId;
+function invokeModal() {
+    isModal.value = true
+    console.log(isModal.value);
 }
 
-async function createChannel(){
-    //voir pour ajouter un popup pourrenseigner les champs
-    // name
-    // img
-    json = null;
-    const options = {
-      method: "PUT",
-      body: json,
+
+async function getChannel() {
+  const options = {
+      method: "GET",
       headers: {
-        Authorization: 'Bearer '+ token.value 
+        Authorization: 'Bearer ' + store.state.token 
       }
-    };
-    const response = await fetch('https://edu.tardigrade.land/msg/protected/channel', options);
-    if (response.status == 200) {
-        response.json().then(data => {
-            selectedChannel.value = data.id;
-        });
-    }
+  };
+  const response = await fetch('https://edu.tardigrade.land/msg/protected/user/channels', options);
+  if (response.status == 200) {
+    response.json().then(data => {
+        store.commit('addChannelList', data);
+    });
+  }
 }
-
 
 </script>
 
 <template>
     <div class="container">
         <section v-for="channel in channelList">
-            <div :id="channel.id" @click="setSelectedChannel(channel.id)" class="flex">
+            <div :id="channel.id" @click="store.commit('setSelectedChannel', channel.id)" class="flex">
                 <img :src="channel.img">
                 <div class="name">{{ channel.name }}</div>
             </div>
         </section>
         <section>
-            <div id="createChannel" @click="createChannel">
+            <div id="createChannel" @click="invokeModal">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -57,6 +49,7 @@ async function createChannel(){
             </div>
         </section>
     </div>
+    <Modal v-show="isModal.value" />
 </template>
 
 <style scoped>
