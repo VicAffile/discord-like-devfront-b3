@@ -25,7 +25,17 @@ async function getMessage() {
     }
 }
 
-async function postMessage(content) {
+async function postMessage() {
+    const regex = new RegExp("^https?:\/\/[^ ]+$");
+    let json;
+    console.log(textInput.value)
+
+    if(regex.test(textInput.value)){
+        json = { "Image": textInput.value };
+    } else {
+        json = { "Text": textInput.value };
+    }
+    console.log(json)
     json = JSON.stringify(json);
     const options = {
         method: "POST",
@@ -41,7 +51,6 @@ async function postMessage(content) {
 }
 
 watchEffect(() => {
-    console.log('oskur')
     getMessage()
 })
 
@@ -60,14 +69,15 @@ watchEffect(() => {
     <div class="message">
         <p style="text-align: left;"><em>{{ unmsg.author }}</em></p>
         <br />
-        <div id="contenu">{{ unmsg.content.Text }}</div>
+        <div id="contenu" v-if="unmsg.content.Text">{{ unmsg.content.Text }}</div>
+        <img v-else :src="unmsg.content.Image" :alt="unmsg.content.Image">
     </div>
 </section>
 
 <section>
     <span id="form">
         <input type="text" id="inputText" v-model="textInput" placeholder="Taper votre message"/>
-        <button @click="postMessage(textInput.value)">Send</button>
+        <button @click="postMessage()">Send</button>
     </span>
 </section>
 </template>
