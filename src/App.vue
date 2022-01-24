@@ -1,9 +1,13 @@
 <script setup>
 import { ref } from 'vue';
-import {useStore} from "vuex"
-import Login from './components/Login.vue'
-import UserList from './components/UserList.vue'
+
+import {useStore} from "vuex";
+import Login from './components/Login.vue';
+import UserList from './components/UserList.vue';
 import Channel from './components/Channel.vue'
+import {useRouter, RouterLink, RouterView} from "vue-router";
+
+const router = useRouter();
 
 const store=useStore();
 
@@ -27,6 +31,7 @@ async function loginToken(userPast) {
       }));
       store.commit('logIn');
       store.commit('saveToken', JSON.parse(localStorage.getItem('discord_like_devfront_b3')).token);
+      router.push('Home');
     });
   } else {
     console.log("Token éronné!");
@@ -58,14 +63,14 @@ if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorag
 }
 
 
-
 </script>
 
 <template>
 
   <!--h1 v-if="store.state.login">Connecté</h1> 
   <Login v-else /-->
-  <Channel :channelList="store.state.channelList" />
+  <!--Channel :channelList="store.state.channelList" /-->
+
 </template>
 
 <style>
