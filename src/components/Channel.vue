@@ -14,13 +14,16 @@ function invokeModal() {
     console.log(isModal.value);
 }
 
-
+function setChannel(id){
+    store.commit('setSelectedChannel', id)
+    console.log(id)
+}
 </script>
 
 <template>
     <div class="container">
         <section v-for="channel in channelList">
-            <div :id="channel.id" @click="store.commit('setSelectedChannel', channel.id)" class="flex">
+            <div :id="channel.id" @click="setChannel(channel.id)" class="flex">
                 <img :src="channel.img">
                 <div class="name">{{ channel.name }}</div>
             </div>

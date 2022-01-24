@@ -27,11 +27,12 @@ async function getChannel() {
 getChannel();
 
 const currentChannel = computed (() =>{
-    store.state.channelList.forEach(function(element) {
+    for(let element of store.state.channelList ){
         if(element.id == store.state.selectedChannel){
+            console.log(element)
             return element ;
         }
-    })
+    }
     return null;
 }) 
 
@@ -39,8 +40,8 @@ const currentChannel = computed (() =>{
 
 <template>
     <Channel :channelList="store.state.channelList" />
-    <Chat :channel="currentChannel" />
-    <UserList :channel="currentChannel" />
+    <Chat :channel="currentChannel" v-if="currentChannel" />
+    <UserList :channel="currentChannel" v-if="currentChannel" />
 </template>
 
 <style scoped>

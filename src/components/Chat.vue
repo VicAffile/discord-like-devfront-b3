@@ -1,7 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
+import store from '../store.js';
+import { watch } from 'vue';
 
-defineProps({
+const props = defineProps({
     channel : Object,
 })
 
@@ -12,13 +14,13 @@ const textInput = ref('');
 async function getMessage() {
     const options = {
         method : "GET",
-        headers : { Authorization : "bearer " + token.value } 
+        headers : { Authorization : "Bearer " + store.state.token} 
     };
-    const response = await fetch('https://edu.tardigrade.land/msg/protected/channel/' + channel.id.value + '/messages/0', )
+    const response = await fetch('https://edu.tardigrade.land/msg/protected/channel/' + props.channel.id + '/messages/0', options )
     if (response.status == 200){
-        response.json.then(data => {
+        response.json().then(data => {
             console.log(data);
-            msg.value = data;
+            message.value = data;
         })
     }
 }
@@ -28,15 +30,21 @@ async function postMessage(content) {
     const options = {
         method: "POST",
         body: json,
-        headers : { Authorization : "bearer " + token.value }
+        headers : { Authorization : "Bearer " + store.state.token }
     };
-    const response = await fetch('https://edu.tardigrade.land/msg/protected/channel/' + channel.id.value + '/message', options);
+    const response = await fetch('https://edu.tardigrade.land/msg/protected/channel/' + props.channel.id + '/message', options);
     if (response.status == 200) {
         response.json().then(data => {
             textInput.value = "" ;
         });
     }
 }
+
+watchEffect(() => {
+    console.log('oskur')
+    getMessage()
+})
+
 </script>
 
 
@@ -49,10 +57,10 @@ async function postMessage(content) {
 </section>
 
 <section v-for="unmsg in message">
-    <div id="message">
+    <div class="message">
         <p style="text-align: left;"><em>{{ unmsg.author }}</em></p>
         <br />
-        <div id="contenu">{{ unmsg }}</div>
+        <div id="contenu">{{ unmsg.content.Text }}</div>
     </div>
 </section>
 
@@ -74,11 +82,5 @@ async function postMessage(content) {
 }
 #inputText{
     resize : both;
-}
-#contenu{
-
-}
-#message{
-
 }
 </style>
