@@ -1,9 +1,14 @@
 <script setup>
 import { ref } from 'vue';
-import {useStore} from "vuex"
-import Login from './components/Login.vue'
-import UserList from './components/UserList.vue'
+import {useStore} from "vuex";
+import {useRouter} from "vue-router";
+import RealApp from './realApp.vue';
+import Login from './components/Login.vue';
+
+const router = useRouter();
+
 const store=useStore();
+
 
 async function loginToken(userPast) {
   const options = {
@@ -15,7 +20,6 @@ async function loginToken(userPast) {
   const response = await fetch('https://edu.tardigrade.land/msg/protected/extend_session', options);
   if (response.status == 200) {
     console.log("Token valide!");
-        store.commit('logIn');
     response.json().then(data => {
       localStorage.removeItem('discord_like_devfront_b3');
       localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
@@ -23,10 +27,14 @@ async function loginToken(userPast) {
         token: data.token,
         timestamp: Date.now()
       }));
+      store.commit('logIn');
+      console.log('save token')
+      store.commit('saveToken', JSON.parse(localStorage.getItem('discord_like_devfront_b3')).token);
+      router.push('Home');
     });
   } else {
     console.log("Token éronné!");
-        store.commit('logOut');
+    store.commit('logOut');
     localStorage.removeItem('discord_like_devfront_b3');
     localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
       username: "",
@@ -36,28 +44,33 @@ async function loginToken(userPast) {
   }
 }
 
-
+store.commit('logOut');
 if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorage.getItem('discord_like_devfront_b3') == 'null') {
-        store.commit('logOut');
   localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
     username: "",
     token: "",
     timestamp: undefined
   }));
 } else {
-        store.commit('logOut');
   let user = JSON.parse(localStorage.discord_like_devfront_b3); 
-  console.log(user.token)
+  //console.log(user.token)
   if (Date.now() - user.timestamp < 10800000 && user.username != "") {
     loginToken(user);
+   // store.commit('logIn');
+
   }
 }
+
 
 </script>
 
 <template>
-  <h1 v-if="store.state.login">Connecté</h1>
+
+  <RealApp v-if="store.state.login"/>
+
   <Login v-else />
+
+
 </template>
 
 <style>
@@ -85,3 +98,6 @@ body {
   background-color: var(--background-color);
 }
 </style>
+
+
+<!-- eyJhbGciOiJIUzI1NiJ9.eyJhZG1pbiI6ImZhbHNlIiwiaWF0I…vYiJ9.femrt8gdtxBkzz62zzxY-8k1mppaf9NvwuR262AUvQg -->

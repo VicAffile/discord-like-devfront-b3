@@ -1,13 +1,14 @@
 <script setup>
 import { ref } from 'vue';
 import {useStore} from 'vuex';
+import { useRouter } from 'vue-router';
 const id = ref('');
 const pw = ref('');
 
 const store=useStore();
 const token = ref('');
 
-
+const router = useRouter();
 
 async function login() {
     let json = { username: id.value, password: pw.value };
@@ -15,7 +16,6 @@ async function login() {
     console.log(json);
     const options = {
         method: "POST",
-        mode: "cors",
         body: json,
         headers: {
             'Content-Type': 'application/json'
@@ -23,7 +23,7 @@ async function login() {
     };
     const response = await fetch('https://edu.tardigrade.land/msg/login', options);
     if (response.status == 200) {
-        response.json().then(data => {
+        const data = await response.json();
             console.log(data)
             token.value = data.token;
             localStorage.removeItem('discord_like_devfront_b3');
@@ -32,9 +32,10 @@ async function login() {
                 token: data.token,
                 timestamp: Date.now()
             }));
-        });
         store.commit('logIn');
+        store.commit('saveToken', JSON.parse(localStorage.getItem('discord_like_devfront_b3')).token);
         pw.value = '';
+        router.push('Home')
     }
 }
 
