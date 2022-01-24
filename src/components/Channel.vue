@@ -15,21 +15,6 @@ function invokeModal() {
 }
 
 
-async function getChannel() {
-  const options = {
-      method: "GET",
-      headers: {
-        Authorization: 'Bearer ' + store.state.token 
-      }
-  };
-  const response = await fetch('https://edu.tardigrade.land/msg/protected/user/channels', options);
-  if (response.status == 200) {
-    response.json().then(data => {
-        store.commit('addChannelList', data);
-    });
-  }
-}
-
 </script>
 
 <template>

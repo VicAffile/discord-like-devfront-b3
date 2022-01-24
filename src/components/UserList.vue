@@ -5,13 +5,11 @@ defineProps({
     channel: Object,
 });
 
-const users = ["Vic", "Tchu", "Aymeric"];
-
 </script>
 
 <template>
-    <section>
-        <div v-for="(user,index) of users">
+    <section v-if="channel">
+        <div v-for="(user,index) of channel.users">
             <span>{{ user }}</span>
         </div>
     </section>

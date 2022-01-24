@@ -3,12 +3,7 @@ import { ref } from 'vue';
 
 defineProps({
     channel : Object,
-    // token : String
 })
-
-const token = "eyJhbGciOiJIUzI1NiJ9.eyJhZG1pbiI6ImZhbHNlIiwiaWF0IjoiMTY0MjUxNzUzNSIsInN1YiI6InRsbyJ9.2esYzWquaFGqPhFqvzj2-SOWFcUtjxG0YGdymYFWRvI"
-
-const msg = ref(['Hello World','Bonjour','Au revoir','Hello World','Bonjour','Au revoir','Hello World','Bonjour','Au revoir','Hello World','Bonjour','Au revoir']);
 
 const message = ref([]);
 
@@ -49,13 +44,13 @@ async function postMessage(content) {
 
 <section>
     <div id="channelName">
-        <!-- <p> {{ channel.name }} </p> -->
+         <p v-if="channel"> {{ channel.name }} </p> 
     </div>
 </section>
 
-<section v-for="unmsg in msg">
+<section v-for="unmsg in message">
     <div id="message">
-        <p style="text-align: left;"><em><!--{{ msg.author }}--></em></p>
+        <p style="text-align: left;"><em>{{ unmsg.author }}</em></p>
         <br />
         <div id="contenu">{{ unmsg }}</div>
     </div>
@@ -63,7 +58,7 @@ async function postMessage(content) {
 
 <section>
     <span id="form">
-        <input type="text" id="inputText" v-model="textInput" placeholder="Taper votre message" size="20%"/>
+        <input type="text" id="inputText" v-model="textInput" placeholder="Taper votre message"/>
         <button @click="postMessage(textInput.value)">Send</button>
     </span>
 </section>

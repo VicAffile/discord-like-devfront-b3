@@ -1,15 +1,14 @@
 <script setup>
 import { ref } from 'vue';
-
 import {useStore} from "vuex";
+import {useRouter} from "vue-router";
+import RealApp from './realApp.vue';
 import Login from './components/Login.vue';
-import UserList from './components/UserList.vue';
-import Channel from './components/Channel.vue'
-import {useRouter, RouterLink, RouterView} from "vue-router";
 
 const router = useRouter();
 
 const store=useStore();
+
 
 async function loginToken(userPast) {
   const options = {
@@ -21,7 +20,6 @@ async function loginToken(userPast) {
   const response = await fetch('https://edu.tardigrade.land/msg/protected/extend_session', options);
   if (response.status == 200) {
     console.log("Token valide!");
-    store.commit('logIn');
     response.json().then(data => {
       localStorage.removeItem('discord_like_devfront_b3');
       localStorage.setItem('discord_like_devfront_b3', JSON.stringify({
@@ -30,6 +28,7 @@ async function loginToken(userPast) {
         timestamp: Date.now()
       }));
       store.commit('logIn');
+      console.log('save token')
       store.commit('saveToken', JSON.parse(localStorage.getItem('discord_like_devfront_b3')).token);
       router.push('Home');
     });
@@ -67,9 +66,10 @@ if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorag
 
 <template>
 
-  <!--h1 v-if="store.state.login">Connecté</h1> 
-  <Login v-else /-->
-  <!--Channel :channelList="store.state.channelList" /-->
+  <RealApp v-if="store.state.login"/>
+
+  <Login v-else />
+
 
 </template>
 
