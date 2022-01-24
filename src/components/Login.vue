@@ -1,13 +1,14 @@
 <script setup>
 import { ref } from 'vue';
 import {useStore} from 'vuex';
+import { useRouter } from 'vue-router';
 const id = ref('');
 const pw = ref('');
 
 const store=useStore();
 const token = ref('');
 
-
+const router = useRouter();
 
 async function login() {
     let json = { username: id.value, password: pw.value };
@@ -15,7 +16,6 @@ async function login() {
     console.log(json);
     const options = {
         method: "POST",
-        mode: "cors",
         body: json,
         headers: {
             'Content-Type': 'application/json'
@@ -35,6 +35,7 @@ async function login() {
         });
         store.commit('logIn');
         pw.value = '';
+        router.push('Home')
     }
 }
 
