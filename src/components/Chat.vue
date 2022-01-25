@@ -19,7 +19,7 @@ async function getMessage() {
     const response = await fetch('https://edu.tardigrade.land/msg/protected/channel/' + props.channel.id + '/messages/0', options)
     if (response.status == 200) {
         response.json().then(data => {
-            console.log(data);
+            //console.log(data);
             message.value = data;
         })
     }
@@ -28,14 +28,14 @@ async function getMessage() {
 async function postMessage() {
     const regex = new RegExp("^https?:\/\/[^ ]+$");
     let json;
-    console.log(textInput.value)
+    //console.log(textInput.value)
 
     if(regex.test(textInput.value)){
         json = { "Image": textInput.value };
     } else {
         json = { "Text": textInput.value };
     }
-    console.log(json)
+    //console.log(json)
     json = JSON.stringify(json);
     const options = {
         method: "POST",

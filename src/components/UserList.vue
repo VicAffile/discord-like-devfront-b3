@@ -19,8 +19,24 @@ async function addUser(){
     const response = await fetch('https://edu.tardigrade.land/msg/protected/channel/' + props.channel.id + '/user/' + addedUser.value, options);
     if (response.status == 200) {
         response.json().then(data => {
+            store.commit('addUser', props.channel.id, addedUser.value)
             addSwitch.value = false;
             addedUser.value = '';
+        });
+    }
+}
+
+async function delUser(user){
+    const options = {
+        method: "DELETE",
+        headers : { 
+            Authorization : "Bearer " + store.state.token,
+        }
+    };
+    const response = await fetch('https://edu.tardigrade.land/msg/protected/channel/' + props.channel.id + '/user/' + user, options);
+    if (response.status == 200) {
+        response.json().then(data => {
+            store.commit('delUser', props.channel.id, user)
         });
     }
 }
@@ -31,6 +47,7 @@ async function addUser(){
     <section>
         <div v-for="user in channel.users">
             <span>{{ user }}</span>
+            <button v-if="channel.creator==store.state.user" @click="delUser(user)">X</button>
         </div>
         <div v-if="channel.creator==store.state.user">
             <span v-if="!addSwitch" @click="addSwitch=true">Ajouter un membre</span>

@@ -15,6 +15,27 @@ const store = createStore({
         saveUser : (state, newUser) => {state.user = newUser},
         setSelectedChannel : (state, channelID) => {state.selectedChannel = channelID},
         addChannelList : (state, newChannelList) => {state.channelList = newChannelList},
+        addUser : (state, id, user) => {
+          state.channelList.forEach((channel, indexChannel) => {
+            if(channel.id == id){
+              console.log(user)
+              state.channelList[indexChannel].users.push(user)
+            }
+          })
+        },
+        delUser : (state, id, user) => {
+          console.log(state.channelList)
+          state.channelList.forEach((channel, indexChannel) => {
+            if(channel.id == id){
+              channel.users.forEach((userInList, indexUser) => {
+                if(userInList == user){
+                  console.log(state.channelList[indexChannel].users[indexUser])
+                  state.channelList[indexChannel].users.splice(indexUser, 1);
+                }
+              })
+            }
+          })
+        }
     } 
 })
 
