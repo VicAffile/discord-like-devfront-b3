@@ -40,7 +40,10 @@ async function postMessage() {
     const options = {
         method: "POST",
         body: json,
-        headers : { Authorization : "Bearer " + store.state.token }
+        headers : { 
+            Authorization : "Bearer " + store.state.token,
+            'Content-Type': 'application/json' 
+        }
     };
     const response = await fetch('https://edu.tardigrade.land/msg/protected/channel/' + props.channel.id + '/message', options);
     if (response.status == 200) {
@@ -50,9 +53,8 @@ async function postMessage() {
     }
 }
 
-watchEffect(() => {
-    getMessage()
-})
+watch(() => props.channel, () => {getMessage()});
+
 
 </script>
 
