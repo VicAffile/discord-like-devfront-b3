@@ -1,8 +1,29 @@
 <script setup>
+import { ref } from 'vue';
+import store from '../store';
 
 const props = defineProps({
     channel: Object,
 });
+
+const addSwitch = ref(false);
+const addedUser = ref('');
+
+async function addUser(){
+    const options = {
+        method: "PUT",
+        headers : { 
+            Authorization : "Bearer " + store.state.token,
+        }
+    };
+    const response = await fetch('https://edu.tardigrade.land/msg/protected/channel/' + props.channel.id + '/user/' + addedUser.value, options);
+    if (response.status == 200) {
+        response.json().then(data => {
+            addSwitch.value = false;
+            addedUser.value = '';
+        });
+    }
+}
 
 </script>
 
@@ -10,6 +31,13 @@ const props = defineProps({
     <section>
         <div v-for="user in channel.users">
             <span>{{ user }}</span>
+        </div>
+        <div v-if="channel.creator==store.state.user">
+            <span v-if="!addSwitch" @click="addSwitch=true">Ajouter un membre</span>
+            <template v-else>
+                <input type="text" v-model="addedUser">
+                <button @click="addUser">+</button>
+            </template>
         </div>
     </section>
 </template>

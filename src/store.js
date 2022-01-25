@@ -4,6 +4,7 @@ const store = createStore({
     state: {
         login: false,
         token: "",
+        user: "",
         selectedChannel: -1,
         channelList: [],
     },
@@ -11,6 +12,7 @@ const store = createStore({
         logIn : (state) => {state.login = true},
         logOut : (state) => {state.login = false},
         saveToken : (state, newToken) => {state.token = newToken},
+        saveUser : (state, newUser) => {state.user = newUser},
         setSelectedChannel : (state, channelID) => {state.selectedChannel = channelID},
         addChannelList : (state, newChannelList) => {state.channelList = newChannelList},
     } 

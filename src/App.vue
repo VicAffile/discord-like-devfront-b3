@@ -30,6 +30,7 @@ async function loginToken(userPast) {
       store.commit('logIn');
       console.log('save token')
       store.commit('saveToken', JSON.parse(localStorage.getItem('discord_like_devfront_b3')).token);
+      store.commit('saveUser', JSON.parse(localStorage.getItem('discord_like_devfront_b3')).username);
       router.push('Home');
     });
   } else {
