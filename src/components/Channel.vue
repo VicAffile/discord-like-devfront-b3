@@ -14,62 +14,107 @@ function invokeModal() {
     console.log(isModal.value);
 }
 
-function setChannel(id){
+function setChannel(id) {
     store.commit('setSelectedChannel', id)
     console.log(id)
 }
 </script>
 
 <template>
-    <div class="container">
-        <section v-for="channel in channelList">
-            <div :id="channel.id" @click="setChannel(channel.id)" class="flex">
-                <img :src="channel.img">
-                <div class="name">{{ channel.name }}</div>
+    <section>
+        <div class="container">
+            <div>
+                <img src="david-goodenough.png" />
             </div>
-        </section>
-        <section>
-            <div id="createChannel" @click="invokeModal">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            <hr />
+        </div>
+        <div v-for="channel in channelList" :id="channel.id" @click="setChannel(channel.id)">
+            <div class="containerAdd">
+                <img :src="channel.img" alt="Channel img" />
+            </div>
+            <div class="name">{{ channel.name }}</div>
+        </div>
+        <div id="createChannel" @click="invokeModal">
+            <div class="containerAdd">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 4v16m8-8H4"
+                    />
                 </svg>
-                <div class="name">Créer un channel</div>
             </div>
-        </section>
-    </div>
+            <div class="name">Créer un channel</div>
+        </div>
+    </section>
     <Modal v-show="isModal.value" />
 </template>
 
 <style scoped>
-    .flex{
-        display: flex;
-    }
+hr {
+    width: 50%;
+}
 
-    img, svg {
-        width: 4rem;
-        height: 4rem;
-        transition: 0.3s;
-        border-radius: 50%; 
-    }
+img {
+    width: 100%;
+    object-fit: cover;
+}
 
-    svg{
-       /* color: var(--secondary-color); */
-       /* background-color: var(--primary-color) */
-    }
+section {
+    width: 72px;
+    background-color: var(--black-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    img:hover, svg:hover{
-        transition: 0.3s;
-        border-radius: 20%;
-    }
+svg {
+    color: var(--green-color);
+}
 
-    .name{
-        display: none;
-        top: 4rem;
-        left: 4rem;
+.containerAdd {
+    overflow: hidden;
+    margin: 5px;
+    width: 48px;
+    height: 48px;
+    transition: 0.3s;
+    border-radius: 50%;
+    background-color: var(--background-color);
+}
 
-    }
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-    img:hover + .name, svg:hover + .name {
-        display: block;
-    }
+.container div {
+    width: 80%;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+}
+
+.containerAdd:hover {
+    border-radius: 20%;
+    background-color: var(--green-color);
+}
+
+.containerAdd:hover svg {
+    color: var(--white-color);
+}
+
+.name {
+    display: none;
+    top: 4rem;
+    left: 4rem;
+}
 </style>
