@@ -1,20 +1,20 @@
 <script setup>
 import { ref } from 'vue';
-import {useStore} from "vuex";
-import {useRouter} from "vue-router";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import RealApp from './realApp.vue';
 import Login from './components/Login.vue';
 
 const router = useRouter();
 
-const store=useStore();
+const store = useStore();
 
 
 async function loginToken(userPast) {
   const options = {
     method: "POST",
     headers: {
-      Authorization: 'Bearer '+JSON.parse(localStorage.discord_like_devfront_b3).token
+      Authorization: 'Bearer ' + JSON.parse(localStorage.discord_like_devfront_b3).token
     }
   };
   const response = await fetch('https://edu.tardigrade.land/msg/protected/extend_session', options);
@@ -52,11 +52,11 @@ if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorag
     timestamp: undefined
   }));
 } else {
-  let user = JSON.parse(localStorage.discord_like_devfront_b3); 
+  let user = JSON.parse(localStorage.discord_like_devfront_b3);
   //console.log(user.token)
   if (Date.now() - user.timestamp < 10800000 && user.username != "") {
     loginToken(user);
-   // store.commit('logIn');
+    // store.commit('logIn');
 
   }
 }
@@ -65,12 +65,9 @@ if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorag
 </script>
 
 <template>
-
-  <RealApp v-if="store.state.login"/>
+  <RealApp v-if="store.state.login" />
 
   <Login v-else />
-
-
 </template>
 
 <style>
@@ -83,8 +80,12 @@ if (localStorage.getItem('discord_like_devfront_b3') == undefined || localStorag
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  /*color: #2c3e50;*/
+  color: var(--white-color);
+  width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 body {
@@ -93,9 +94,13 @@ body {
   --secondary-color: rgb(114, 137, 218);
   --black-color: rgb(48, 51, 57);
   --white-color: rgb(238, 238, 238);
+  --black-secondary-color: rgb(32, 34, 37);
+  --green-color: rgb(59, 165, 65);
+  --input-message-color: rgb(64, 68, 75);
 
+  width: 100%;
   margin: 0px;
-  background-color: var(--background-color);
+  background-color: var(--black-color);
 }
 </style>
 
