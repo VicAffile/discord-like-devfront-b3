@@ -80,7 +80,7 @@ watch(() => props.channel, () => {getMessage()});
                     type="text"
                     id="inputText"
                     v-model="textInput"
-                    placeholder="Taper votre message"
+                    placeholder="Tapez votre message"
                 />
                 <button id="send" @click="postMessage()">Send</button>
             </div>
