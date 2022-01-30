@@ -29,7 +29,7 @@ function setChannel(id) {
             <hr />
         </div>
         <div v-for="channel in channelList" :id="channel.id" @click="setChannel(channel.id)">
-            <div class="containerAdd">
+            <div class="containerChannel">
                 <img :src="channel.img" alt="Channel img" />
             </div>
             <div class="name">{{ channel.name }}</div>
@@ -79,16 +79,6 @@ svg {
     color: var(--green-color);
 }
 
-.containerAdd {
-    overflow: hidden;
-    margin: 5px;
-    width: 48px;
-    height: 48px;
-    transition: 0.3s;
-    border-radius: 50%;
-    background-color: var(--background-color);
-}
-
 .container {
     width: 100%;
     display: flex;
@@ -102,6 +92,15 @@ svg {
     border-radius: 10px;
     background-color: var(--secondary-color);
 }
+.containerAdd {
+    overflow: hidden;
+    margin: 5px;
+    width: 48px;
+    height: 48px;
+    transition: 0.3s;
+    border-radius: 50%;
+    background-color: var(--background-color);
+}
 
 .containerAdd:hover {
     border-radius: 20%;
@@ -109,6 +108,23 @@ svg {
 }
 
 .containerAdd:hover svg {
+    color: var(--white-color);
+}
+.containerChannel {
+    overflow: hidden;
+    margin: 5px;
+    width: 48px;
+    height: 48px;
+    transition: 0.3s;
+    border-radius: 50%;
+    background-color: var(--background-color);
+}
+
+.containerChannel:hover {
+    border-radius: 20%;
+}
+
+.containerChannel:hover svg {
     color: var(--white-color);
 }
 

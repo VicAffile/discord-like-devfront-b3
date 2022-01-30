@@ -45,6 +45,7 @@ async function delUser(user){
 
 <template>
     <section>
+        <h3>MEMBRES - {{ channel.users.length }}</h3>
         <div v-for="user in channel.users">
             <span>{{ user }}</span>
             <button v-if="channel.creator==store.state.user" @click="delUser(user)">X</button>
@@ -63,6 +64,7 @@ async function delUser(user){
 div {
     transition: 0.3s;
     padding: 2px;
+    padding-left: 10px;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -71,6 +73,11 @@ div {
 div:hover {
     background-color: var(--background-color);
     border-radius: 5px;
+}
+
+h3 {
+    padding-left: 10px;
+    color: var(--white-color);
 }
 
 section {
