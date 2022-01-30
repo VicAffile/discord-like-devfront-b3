@@ -91,6 +91,7 @@ h2 {
 
 input {
     width: 100%;
+    color: var(--white-color);
     background-color: var(--input-message-color);
     border: none;
     resize: both;
@@ -135,6 +136,10 @@ section {
 #conversation {
     overflow-y: scroll;
     height: 80%;
+}
+
+#conversation::-webkit-scrollbar-thumb {
+    color: red;
 }
 
 #foot {
